@@ -31,6 +31,9 @@ When starting a new project, I like to keep version control top of mind. There w
 
 After making an empty file called `main.py`, I’ll open up a terminal and spin up a virtual python environment specifically for this project. I like working with Python3.6+ so lets get it running and start installing the packages we KNOW we need immediately. 
 
+`$ pip install matplotlib numpy keras scikit-image opencv-python-headless`
+
+Where `opencv-python-headless` was the necessary version to use after trying `opencv-python` and getting an error regarding dependancies for platforms besides Mac. 
 
 ## Data Acquisition v0.0
 Lets 
