@@ -227,3 +227,9 @@ For the sake of pythonic modularity, lets put the random selection and saving in
         args = parser.parse_args()
 
         data_collect(args.direction)
+
+
+## Next steps
+1. collect 'right' looking eye images
+2. train the keras model to classify the images as 'left' or 'right'
+3. 
