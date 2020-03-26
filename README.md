@@ -25,14 +25,13 @@ I feel like one is the only easy step here; the others are going to be a challen
 ## Step Zero – The Coding Environment
 When starting a new project, I like to keep version control top of mind. There will be many iterations to this project as it develops, making version control a critical component to this project. Let’s start a new (empty) repo on GitHub, clone it to my local machine, and make the first branch. 
 
-> `$ git clone <my_project_repo>.git`
-
-> `$ git branch starting-out`
+    $ git clone <my_project_repo>.git
+    $ git branch starting-out
 
 
 After making an empty file called `main.py`, I’ll open up a terminal and spin up a virtual python environment specifically for this project. I like working with Python3.6+ so lets get it running and start installing the packages we KNOW we need immediately. 
 
-`$ pip install matplotlib numpy keras scikit-image opencv-python-headless`
+    $ pip install matplotlib numpy keras scikit-image opencv-python-headless
 
 Where `opencv-python-headless` was the necessary version to use after trying `opencv-python` and getting an error regarding dependancies for platforms besides Mac. 
 
@@ -44,3 +43,10 @@ Some startr code is given in the OpenCV Python documentation tutorial, ["Face De
     # greyscale the frame image for the face object model
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(gray, 1.3, 5)
+
+At this point of the algorithm, we have faces detected in the webcam images. Though, we do need to stop the webcam stream at some point, and to do this we designate a "waitKey". Basically, while streaming the webcam video we can press a particular key to activate a release of the camera (kill the stream). Let's set that key to `q` which will release the camera and close the webcam streaming window on our screen. 
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        # When everything is done, release the capture
+        cap.release()
+        cv2.destroyAllWindows()
