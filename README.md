@@ -25,8 +25,9 @@ I feel like one is the only easy step here; the others are going to be a challen
 ## Step Zero – The Coding Environment
 When starting a new project, I like to keep version control top of mind. There will be many iterations to this project as it develops, making version control a critical component to this project. Let’s start a new (empty) repo on GitHub, clone it to my local machine, and make the first branch. 
 
-`$ git clone <my_project_repo>.git`
-`$ git branch starting-out`
+> `$ git clone <my_project_repo>.git`
+
+> `$ git branch starting-out`
 
 
 After making an empty file called `main.py`, I’ll open up a terminal and spin up a virtual python environment specifically for this project. I like working with Python3.6+ so lets get it running and start installing the packages we KNOW we need immediately. 
