@@ -44,9 +44,76 @@ Some startr code is given in the OpenCV Python documentation tutorial, ["Face De
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(gray, 1.3, 5)
 
-At this point of the algorithm, we have faces detected in the webcam images. Though, we do need to stop the webcam stream at some point, and to do this we designate a "waitKey". Basically, while streaming the webcam video we can press a particular key to activate a release of the camera (kill the stream). Let's set that key to `q` which will release the camera and close the webcam streaming window on our screen. 
+At this point of the algorithm, we have faces detected in the webcam images. Somthing to know ahead of time is the object representation of the detected face(s). The faces object is represented as an _n x 4_ array, with _n_ being the number of faces detected. For example :
+
+    >>> faces
+    array([[576, 345, 241, 241]], dtype=int32)
+    
+representing the coordinates of the top left corner of the bounding box (576, 345) and the width and height of the box (241,241). We can use this information ahead of time to recolor the outermost pixels of the box to blue with the `cv2.rectangle` function acting on the `frame` object of pixel arrays: 
+
+    for (x,y,w,h) in faces:
+        img = cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
+        roi_gray = gray[y:y+h, x:x+w]
+        roi_color = img[y:y+h, x:x+w]
+
+Here we have modified the captured `frame` to include a blue bounding box and saved this as the variable `img` - which will be useful for reasons we'll see in a moment. We also define a region of interest which contains only the face in the frame. The `roi_gray` is then passed to the eye detection model, and `roi_color` will be used for drawing bounding boxes around the eyes. 
+
+    eyes = eyeCascade.detectMultiScale(roi_gray)
+    for (ex,ey,ew,eh) in eyes:
+        cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+
+We can then show the whole image and the bounding boxes with the `cv2.imshow` function, passing the name of the window and the frame that has bounding boxes drawn directly on to it.  
+
+    cv2.imshow('uncreative name of window', frame)
+
+Though, we do need to stop the webcam stream at some point, and to do this we designate a "waitKey". Basically, while streaming the webcam video we can press a particular key to activate a release of the camera (kill the stream). Let's set that key to `q` which will release the camera and close the webcam streaming window on our screen. 
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         # When everything is done, release the capture
         cap.release()
         cv2.destroyAllWindows()
+ 
+With these essential code components, we can build a function to run from the `main.py` file. Let's put the above code into a `while` loop so that we can capture more than a single frame, effectively streaming the webcam data and detecting faces and eyes on every frame. 
+
+    import cv2
+    import numpy as np
+    import sys
+
+    # Haar Cascade models
+    face_casc_path = '../lookyloo-venv/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_default.xml'
+    eye_casc_path = '../lookyloo-venv/lib/python3.7/site-packages/cv2/data/haarcascade_eye.xml'
+
+    faceCascade = cv2.CascadeClassifier(face_casc_path)
+    eyeCascade = cv2.CascadeClassifier(eye_casc_path)
+
+    if __name__ == "__main__":
+        # def collect_eye_images(look_direction = 'left', num = 200)
+        while True:
+            cap = cv2.VideoCapture(0)
+            ret, frame = cap.read()
+            # greyscale the frame image for the face object model
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces = faceCascade.detectMultiScale(gray, 1.3, 5)
+
+            # Draw bounding boxes around the faces
+            faces = faceCascade.detectMultiScale(gray, 1.3, 5)
+            for (x,y,w,h) in faces:
+                img = cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
+                roi_gray = gray[y:y+h, x:x+w]
+                roi_color = img[y:y+h, x:x+w]
+
+                # Draw a rectangle around the eyes
+                eyes = eyeCascade.detectMultiScale(roi_gray)
+                if len(eyes) >=2:
+                    eyes_median_area = np.median(eyes[:, 2])
+                    for (ex,ey,ew,eh) in eyes:
+                        cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+
+            cv2.imshow('LookyLoo',frame)
+
+            # Kill the stream on entering 'q' while on the window
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                # When everything is done, release the capture
+                cap.release()
+                cv2.destroyAllWindows()
+                break
