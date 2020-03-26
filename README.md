@@ -39,8 +39,8 @@ Where `opencv-python-headless` was the necessary version to use after trying `op
 ## Data Acquisition v0.0
 Some startr code is given in the OpenCV Python documentation tutorial, ["Face Detection using Haar Cascades"](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html#face-detection). One significant difference here is that we are using a webcam, and the tutorial is using a static image. So let's modify the starter code to leverage the webcam, as well as greyscale the captured video frames for the HaarCascade model. 
 
-`cap = cv2.VideoCapture(0)`
-`ret, frame = cap.read()`
-`# greyscale the frame image for the face object model`
-`gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)`
-`faces = faceCascade.detectMultiScale(gray, 1.3, 5)`
+```cap = cv2.VideoCapture(0)```
+```ret, frame = cap.read()```
+```# greyscale the frame image for the face object model```
+```gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)```
+```faces = faceCascade.detectMultiScale(gray, 1.3, 5)```
