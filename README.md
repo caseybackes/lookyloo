@@ -163,3 +163,4 @@ Algorithm
             randomly select 'train' or 'test' with 0.8 and 0.2 probability respectively. 
             save image of eyeball roi to selected train or test directory under appropriate class
 
+For the sake of pythonic modularity, lets put the random selection and saving into a separate fuction, `selective_save()`. We can do the same with the code we have up to now, let's call it `data_collect()` and call it within the main block. Here's what we have for code at this point. 
