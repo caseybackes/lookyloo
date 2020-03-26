@@ -23,7 +23,7 @@ I feel like one is the only easy step here; the others are going to be a challen
 
 
 ## Step Zero – The Coding Environment
-When starting a new project, I like to keep version control top of mind. There will be many iterations to this project as it develops, making version control a critical component to this project. Let’s start a new (empty) repo on GitHub, clone it to my local machine, and make the first branch. 
+When starting a new project, I like to keep version control top of mind. There will be many iterations to this project as it develops, making version control a critical component to this project. Let’s start a new (empty) repo on GitHub, clone it to my local machine, and make the first branch called `starting-out`. 
 
     $ git clone <my_project_repo>.git
     $ git branch starting-out
@@ -117,3 +117,48 @@ With these essential code components, we can build a function to run from the `m
                 cap.release()
                 cv2.destroyAllWindows()
                 break
+
+This gives a live stream of the webcam with bounding box overlay of the detected face(s) and eye(s). It is likely that you will blink while looking at the screen, and the model does not detect eyes very well during a blink. 
+
+We also want to save the images of the eyes for training our own model that will predict which direction we are looking. We'll use the Keras library to build a supervised (labeled) model, and some considerations should be taken into account right about now. When Keras loads images for training a suprevised model, it expects a file structure for training and test data resembeling the following : 
+
+    ├── main.py
+    ├── data
+    │   ├── test
+    │   │   ├── class1
+    │   │   │   ├── img4.png
+    │   │   │   └── img5.png
+    │   │   └── class2
+    │   │       ├── img6.png
+    │   │       └── img7.png
+    │   └── train
+    │       ├── class1
+    │       │   ├── img0.png
+    │       │   └── img1.png
+    │       └── class2
+    │           ├── img2.png
+    │           └── img3.png
+
+This way it knows the labels (as directory name) for each image. So what we need to do now is build that directory structure and start saving images to directories
+For now, lets make the `training` and `test` directories and create classes of `left` and `right`. Here's an example of what I have : 
+    ├── images
+    │   ├── test
+    │   │   ├── left
+    │   │   └── right
+    │   └── train
+    │       ├── left
+    │       └── right
+    ├── main.py
+
+
+The obvious question now is how to direct our saved images of eyes to each of the directories. It is common in machine learning to use an 80/20 split between training and testing data. There are a number of ways to hack together such split, but here's the approach I'm taking.
+
+Algorithm
+
+    Detect faces
+    for each face:
+        detect all eyeballs
+        for each eyeball:
+            randomly select 'train' or 'test' with 0.8 and 0.2 probability respectively. 
+            save image of eyeball roi to selected train or test directory under appropriate class
+
