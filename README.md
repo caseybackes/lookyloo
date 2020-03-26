@@ -141,6 +141,7 @@ We also want to save the images of the eyes for training our own model that will
 
 This way it knows the labels (as directory name) for each image. So what we need to do now is build that directory structure and start saving images to directories
 For now, lets make the `training` and `test` directories and create classes of `left` and `right`. Here's an example of what I have : 
+
     ├── images
     │   ├── test
     │   │   ├── left
