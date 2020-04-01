@@ -1,5 +1,5 @@
 # LookyLoo
-__A project in real-time image recognition and classification. __
+_A project in real-time image recognition and classification._
 
 ## Motivation
 About a year ago, I found myself back in the job market looking for my next opportunity. A mentor, and dear friend, Ravin, shared some information with me regarding my resume. The most interesting thing Ravin shared with me was the work that had been done with eye-tracking as applied to resumes. It was basically images of resumes with heat map overlays that represented the amount of time an HR staffer would spend looking at various parts of the resume. Sure, I learned to prioritize certain parts of my resume with this information but looking back (now that I'm a "big deal") I really want to see the visceral innards of the project that produced that information - the eye tracking program. One way to do it would be to crawl the interwebs and find some version of that sort of work, but that's like looking at the answers before taking the exam. I'd really rather build that solution/project myself, researching what I need to on object detection and data acquisition along the way – cementing my own understanding (and probable struggles) on machine learning as a part of a larger application. 
